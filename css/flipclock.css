@@ -23,6 +23,8 @@
     --colon-margin: 30px;
     --colon-border-radius: 5px;
     --clock-margin: 5px;
+    /* 卡片过渡时间 */
+    --cards-transition: 1s;
 }
 
 
@@ -135,7 +137,7 @@ body {
 
 .cards .card-box .card2 {
     z-index: 3;
-    transition: 1s;
+    transition: var(--cards-transition);
     top: 50%;
     line-height: 0;
     transform: rotateX(180deg);
@@ -149,7 +151,7 @@ body {
     line-height: var(--card-height);
     transform-origin: center bottom;
     backface-visibility: hidden;
-    transition: 1s;
+    transition: var(--cards-transition);
     z-index: 2;
     border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
 }
