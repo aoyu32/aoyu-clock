@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    user-select: none;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+
+.setting-background {
+    min-width: 200px;
+    background-color: #fff;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.head {
+    background-color: #4a4b4d;
+    color: white;
+    /* padding: 10px 20px; */
+    display: flex;
+    justify-content: space-between;
+    -webkit-app-region: drag;
+    align-items: center;
+}
+
+.head-left {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.head-left img {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+.head-left span {
+    font-size: 14px;
+}
+
+.head-right {
+    display: flex;
+}
+
+.btn {
+    background: transparent;
+    border: none;
+    width: 35px; /* 设置更大的点击区域 */
+    height: 32px; /* 设置为正方形区域 */
+    display: flex;
+    -webkit-app-region: no-drag;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    position: relative;
+}
+
+.btn:hover {
+    background-color: rgba(101, 199, 238, 0.425);
+}
+
+#btn-close:hover{
+    background-color: rgba(253, 0, 0, 0.514);
+}
+
+.btn i {
+    font-size: 16px; /* 设置图标字体大小 */
+    color: white;
+}
+
+.main {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.main h1 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    border-left: 4px solid #007BFF;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+h1:hover {
+    background-color: #f0f0f0;
+    padding-left: 15px;
+}

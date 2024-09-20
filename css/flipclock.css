@@ -1,0 +1,188 @@
+:root {
+    /* 头部样式变量 */
+    --logo-date-color: rgb(238, 218, 218);
+    --logo-date-fontweight: 600;
+    --logo-date-fontsize: 20px;
+    /* 卡片样式变量 */
+    --card-width: 200px;
+    --card-height: 250px;
+    --card-border-radius: 10px;
+    --card-color: #2e2e2e;
+    /* --card-color: rgb(67, 68, 68); */
+    /* 卡片数字样式变量 */
+    --card-number-color: #e3e8ee;
+    --card-number-fontsize: 200px;
+    --card-number-fontweight: 700;
+    /* 卡片中线样式变量 */
+    --card-center-line-color: rgb(170, 167, 167);
+    --card-center-height: 2px;
+    /* 冒号样式变量 */
+    --colon-color: rgb(252, 253, 253);
+    --colon-box-width: 40px;
+    --colon-size: 20px;
+    --colon-margin: 30px;
+    --colon-border-radius: 5px;
+    --clock-margin: 5px;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* background-color: #181717; */
+    user-select: none;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /* -webkit-app-region: drag */
+}
+
+.clock-background {
+    width: 1200px;
+    height: 280px;
+    /* background-color: black; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0 auto;
+    flex-direction: column;
+}
+
+.date-logo {
+    width: 1200px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: calc(100% - var(--card-height));
+    color: var(--logo-date-color);
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    font-size: var(--logo-date-fontsize);
+    left: var(--clock-margin);
+    font-weight: var(--logo-date-fontweight);
+}
+
+.date {
+    position: absolute;
+    right: var(--clock-margin);
+    font-size: var(--logo-date-fontsize);
+    font-weight: var(--logo-date-fontweight);
+}
+
+.cards {
+    width: 100%;
+    height: var(--card-height);
+    /* -webkit-app-region: no-drag; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+
+.card-box {
+
+    width: var(--card-width);
+    height: var(--card-height);
+    background-color: var(--card-color);
+    border-radius: var(--card-border-radius);
+    position: relative;
+    perspective: 900px;
+    margin: var(--clock-margin);
+
+}
+
+.card-box::before {
+    z-index: 99;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    background: var(--card-center-line-color);
+    height: var(--card-center-height);
+    width: 100%;
+}
+
+.card-item {
+
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    font-size: var(--card-number-fontsize);
+    font-weight: var(--card-number-fontweight);
+    color: var(--card-number-color);
+    background-color: var(--card-color);
+    text-align: center;
+}
+
+.cards .card-box .card1 {
+    z-index: 2;
+    line-height: var(--card-height);
+    /* background-color: rgb(158, 235, 158); */
+    border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+}
+
+.cards .card-box .card2 {
+    z-index: 3;
+    transition: 1s;
+    top: 50%;
+    line-height: 0;
+    transform: rotateX(180deg);
+    backface-visibility: hidden;
+    transform-origin: center top;
+    border-radius: 0 0 var(--card-border-radius) var(--card-border-radius);
+}
+
+
+.cards .card-box .card3 {
+    line-height: var(--card-height);
+    transform-origin: center bottom;
+    backface-visibility: hidden;
+    transition: 1s;
+    z-index: 2;
+    border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+}
+
+.cards .card-box .card4 {
+    top: 50%;
+    line-height: 0;
+    z-index: 2;
+    border-radius: 0 0 var(--card-border-radius) var(--card-border-radius);
+}
+
+.colon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: var(--card-height);
+    width: var(--colon-box-width);
+}
+
+.colon-top {
+    width: var(--colon-size);
+    height: var(--colon-size);
+    background-color: var(--colon-color);
+    border-radius: var(--colon-border-radius);
+    margin-bottom: var(--colon-margin);
+}
+
+.colon-bottom {
+    width: var(--colon-size);
+    height: var(--colon-size);
+    background-color: var(--colon-color);
+    border-radius: var(--colon-border-radius);
+    background-color: var(--colon-color);
+    margin-top: var(--colon-margin);
+}
