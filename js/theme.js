@@ -1,39 +1,41 @@
 const root = document.documentElement
-const card2 = document.querySelector(".card2")
-const card3 = document.querySelector(".card3")
 window.api.onMainMsg('set-win-theme', (event, data) => {
-
-    console.log("main send msg:", data);
-
     changeBoxColor(data)
-
-
 })
 
 function changeBoxColor(model) {
 
-    switch (model) {
-        case "dark":
-            console.log("is dark");
-            root.style.setProperty('--cards-transition', '0s')
-            root.style.setProperty('--card-color', '#2e2e2e')
-            root.style.setProperty('--card-number-color', '#e3e8ee')
-            root.style.setProperty('--colon-color', '#e3e8ee')
-            setTimeout(() => {
-                root.style.setProperty('--cards-transition', '1s')
-            }, 50)
-            // root.style.setProperty('--cards-transition','1s')
-            break;
-        case "light":
-            console.log("is light");
-            root.style.setProperty('--cards-transition', '0s')
-            root.style.setProperty('--card-color', '#e3e8ee')
-            root.style.setProperty('--card-number-color', '#2e2e2e')
-            root.style.setProperty('--colon-color', '#2e2e2e')
-            setTimeout(() => {
-                root.style.setProperty('--cards-transition', '1s')
-            }, 50)
-            break;
+    let dark = {
+        cardColor: '#2e2e2e',
+        numberColor: '#e3e8ee',
+        colonColor: '#e3e8ee',
+        transitionTime: '1s'
     }
 
+    let light = {
+        cardColor: '#e3e8ee',
+        numberColor: '#2e2e2e',
+        colonColor: '#2e2e2e',
+        transitionTime: '1s'
+    }
+
+    switch (model) {
+        case "dark":
+            setColorProperty(dark)
+            break
+        case "light":
+            setColorProperty(light)
+            break
+    }
+
+}
+
+function setColorProperty(model) {
+    root.style.setProperty('--cards-transition','0s')
+    root.style.setProperty('--card-color', model.cardColor)
+    root.style.setProperty('--card-number-color', model.numberColor)
+    root.style.setProperty('--colon-color', model.colonColor)
+    setTimeout(() => {
+        root.style.setProperty('--cards-transition', model.transitionTime)
+    }, 50)
 }
