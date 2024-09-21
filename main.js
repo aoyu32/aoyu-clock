@@ -12,6 +12,7 @@ let mainWinH = 280
 let settingWin = null
 let ischecked = false //是否开启屏保模式
 let selectOption = "system"
+let selectSize = "middle"
 //热加载
 try {
   require('electron-reloader')(module, {});
@@ -28,12 +29,15 @@ const createWindow = () => {
     resizable: false,
     focusable: false,
     skipTaskbar: true,
+    // aspectRatio:mainWinW/mainWinH,
     "webPreferences": {
       nodeIntegration: true,//开启可以使用node api
       contextIsolation: true,//上下文隔离（主进程和渲染进程之间隔离，渲染进程不能直接使用主进程的东西）
       preload: path.join(__dirname, 'preload.js')
     }
   })
+
+  // mainWin.setAspectRatio(mainWinW/mainWinH)
 
   mainWin.loadFile('./html/' + clockTyle)
 
@@ -74,13 +78,7 @@ app.whenReady().then(() => {
   tray = new Tray(path.join(__dirname, './assets/aoyu2.ico'))
   tray.setToolTip('aoyu\'s flip clock')
   const contextMenu = Menu.buildFromTemplate([
-    {
-      label: '调整尺寸',
-      type: 'normal',
-      click: () => {
-        console.log('开发中...');
-      }
-    },
+
     {
       label: '时钟设置',
       type: 'normal',
@@ -92,13 +90,33 @@ app.whenReady().then(() => {
 
     },
     {
-      label: '重启',
+      type: "separator"
+    },
+    {
+      label: '检查更新',
       type: 'normal',
       click: () => {
-        app.relaunch()
-        app.exit(0)
+        app.quit()
       }
     },
+    {
+      label: '关于',
+      type: 'normal',
+      click: () => {
+        app.quit()
+      }
+    },
+    {
+      type:'separator'
+    },
+    // {
+    //   label: '重启',
+    //   type: 'normal',
+    //   click: () => {
+    //     app.relaunch()
+    //     app.exit(0)
+    //   }
+    // },
     {
       label: '退出',
       type: 'normal',
@@ -157,6 +175,39 @@ ipcMain.on("right-menu", (ev) => {
 
     },
     {
+      label: '选择尺寸',
+      submenu: [
+        {
+          label: "小",
+          type: "radio",
+          checked: selectSize === "small",
+          click: () => {
+            selectSize = "small"
+            setClockSize(selectSize)
+          }
+        },
+        {
+          label: "中",
+          type: "radio",
+          checked: selectSize === "middle",
+          click: () => {
+            selectSize = "middle"
+            setClockSize(selectSize)
+          }
+
+        },
+        {
+          label: "大",
+          type: "radio",
+          checked: selectSize === "large",
+          click: () => {
+            selectSize = "large"
+            setClockSize(selectSize)
+          }
+        }
+      ]
+    },
+    {
       label: "屏保模式",
       type: "checkbox",
       checked: ischecked,
@@ -200,6 +251,32 @@ ipcMain.on("right-menu", (ev) => {
   rightMenu.popup({ window: BrowserWindow.fromWebContents(ev.sender) })
 
 })
+
+
+function setClockSize(selectSize) {
+
+  console.log(selectSize);
+
+  switch (selectSize) {
+    case 'small':
+      mainWinW = 400
+      mainWinH = 100
+      mainWin.setSize(mainWinW, mainWinH)
+      break;
+    case 'middle':
+      mainWinW = 1200
+      mainWinH = 280
+      mainWin.setSize(mainWinW, mainWinH)
+      break
+    case 'large':
+      mainWinW = 1600
+      mainWinH = 400
+      mainWin.setSize(mainWinW, mainWinH)
+      break;
+  }
+
+  mainWin.webContents.send('change-clock-size', selectSize)
+}
 
 //时钟窗口移动
 function mainWinMove() {
@@ -252,9 +329,7 @@ function setTheme(model) {
       mainWin.webContents.send("set-win-theme", "light")
       break
     case "system":
-      console.log("system");
       console.log(nativeTheme.shouldUseDarkColors ? "dark" : "light");
-
       mainWin.webContents.send("set-win-theme", nativeTheme.shouldUseDarkColors ? "dark" : "light")
       break
   }
