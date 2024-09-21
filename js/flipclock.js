@@ -1,4 +1,12 @@
+window.api.onMainMsg('system-resumed', () => {
+    console.log('Resuming clock synchronization.');
+    // 重新同步时钟的时间，例如从系统时间获取
+    initTime()
+    // updateTime();
+});
+
 //获取dom元素
+
 const hours1 = document.getElementById("hours1")
 const hours2 = document.getElementById("hours2")
 const minutes1 = document.getElementById("minutes1")

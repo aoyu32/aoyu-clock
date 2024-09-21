@@ -1,7 +1,8 @@
 const { log } = require('console')
-const { app, BrowserWindow, powerSaveBlocker, nativeTheme, Menu, Tray, ipcMain } = require('electron')
-
+const { app, BrowserWindow, powerMonitor, nativeTheme, Menu, Tray, ipcMain } = require('electron')
 const path = require('path')
+
+const koffi = require('koffi');
 
 let tray = null
 let mainWin = null
@@ -56,6 +57,18 @@ app.whenReady().then(() => {
   });
 
 
+
+  powerMonitor.on('resume', () => {
+    console.log('System resumed from sleep.');
+    // 发送消息到渲染进程，通知重新同步时间
+    mainWin.webContents.send('system-resumed');
+  });
+
+  //阻止系统休眠应用关闭 
+  // // const id = powerSaveBlocker.start('prevent-app-suspension')
+  // console.log(powerSaveBlocker.isStarted(id))
+
+  // powerSaveBlocker.stop(id)
 
   setTheme("system")
   tray = new Tray(path.join(__dirname, './assets/aoyu2.ico'))
@@ -115,7 +128,6 @@ ipcMain.on("right-menu", (ev) => {
           type: "radio",
           checked: selectOption === "dark",
           click: () => {
-            console.log("dark model");
             selectOption = "dark"
             setTheme(selectOption)
 
@@ -126,7 +138,6 @@ ipcMain.on("right-menu", (ev) => {
           type: "radio",
           checked: selectOption === "light",
           click: () => {
-            console.log("light model");
             selectOption = "light"
             setTheme(selectOption)
           }
@@ -137,7 +148,6 @@ ipcMain.on("right-menu", (ev) => {
           type: "radio",
           checked: selectOption === "system",
           click: () => {
-            console.log("system model");
             selectOption = "system"
             setTheme("system")
           }
@@ -156,10 +166,12 @@ ipcMain.on("right-menu", (ev) => {
           mainWin.unmaximize()
           mainWin.webContents.send('is-win-max', !ischecked)
           ischecked = false
+          isHideTaskBar(false)
         } else {
           mainWin.maximize()
           mainWin.webContents.send('is-win-max', !ischecked)
           ischecked = true
+          isHideTaskBar(true)
         }
       }
 
@@ -201,6 +213,27 @@ function mainWinMove() {
     // mainWin.setPosition(data.x,data.y)
   })
 
+}
+
+//是否显示系统任务栏
+function isHideTaskBar(isHide) {
+  // 定义 Windows API 函数
+  const user32 = koffi.load('user32.dll');
+
+  // FindWindowA 用于获取任务栏窗口句柄
+  const FindWindowA = user32.func('long FindWindowA(const char* lpClassName, const char* lpWindowName)');
+
+  // ShowWindow 用于显示/隐藏窗口
+  const ShowWindow = user32.func('bool ShowWindow(long hWnd, int nCmdShow)');
+
+  // 获取任务栏窗口句柄
+  const taskbarHandle = FindWindowA('Shell_TrayWnd', null);
+
+  if (isHide) {
+    ShowWindow(taskbarHandle, 0);
+  } else {
+    ShowWindow(taskbarHandle, 5)
+  }
 }
 
 //设置
@@ -277,3 +310,5 @@ ipcMain.on('win:status', (ev, action) => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
+
+
