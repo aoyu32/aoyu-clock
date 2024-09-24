@@ -1,8 +1,15 @@
 :root {
+
+
+    /*背景宽高*/
+    --background-width:1200px;
+    --background-height:280px;
+
     /* 头部样式变量 */
     --logo-date-color: rgb(248, 239, 239);
     --logo-date-fontweight: 600;
     --logo-date-fontsize: 20px;
+    --logo-date-height:30px;
     /* 卡片样式变量 */
     --card-width: 200px;
     --card-height: 250px;
@@ -42,8 +49,9 @@ body {
 }
 
 .clock-background {
-    width: 1200px;
-    height: 280px;
+    width: var(--background-width);
+    /* width: 100%; */
+    /* height: var(--background-height); */
     /* background-color: black; */
     display: flex;
     align-items: center;
@@ -54,8 +62,8 @@ body {
 }
 
 .date-logo {
-    width: 1200px;
-    height: 30px;
+    width: var(--background-width);
+    height: var(--logo-date-height);
     display: flex;
     align-items: center;
     justify-content: center;

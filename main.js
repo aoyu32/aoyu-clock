@@ -107,7 +107,7 @@ app.whenReady().then(() => {
       }
     },
     {
-      type:'separator'
+      type: 'separator'
     },
     // {
     //   label: '重启',
@@ -122,6 +122,7 @@ app.whenReady().then(() => {
       type: 'normal',
       click: () => {
         app.quit()
+        isHideTaskBar(false)
       }
     }
   ])
@@ -184,6 +185,7 @@ ipcMain.on("right-menu", (ev) => {
           click: () => {
             selectSize = "small"
             setClockSize(selectSize)
+
           }
         },
         {
@@ -218,11 +220,13 @@ ipcMain.on("right-menu", (ev) => {
           mainWin.webContents.send('is-win-max', !ischecked)
           ischecked = false
           isHideTaskBar(false)
+          rePosition(mainWinW, mainWinH)
         } else {
           mainWin.maximize()
           mainWin.webContents.send('is-win-max', !ischecked)
           ischecked = true
           isHideTaskBar(true)
+
         }
       }
 
@@ -244,6 +248,7 @@ ipcMain.on("right-menu", (ev) => {
       type: "normal",
       click: () => {
         app.quit()
+        isHideTaskBar(false)
       }
     }
   ])
@@ -275,7 +280,9 @@ function setClockSize(selectSize) {
       break;
   }
 
+  mainWin.maximize()
   mainWin.webContents.send('change-clock-size', selectSize)
+  rePosition(mainWinW, mainWinH)
 }
 
 //时钟窗口移动
@@ -286,7 +293,9 @@ function mainWinMove() {
   })
 
   ipcMain.on('set-win-position', (event, data) => {
+
     mainWin.setBounds({ x: data.x, y: data.y, width: mainWinW, height: mainWinH })
+
     // mainWin.setPosition(data.x,data.y)
   })
 
@@ -384,6 +393,16 @@ ipcMain.on('win:status', (ev, action) => {
 //关闭程序
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
+  isHideTaskBar(false)
 })
 
 
+
+function rePosition(mainWinW, mainWinH) {
+
+  const [positionX, positionY] = mainWin.getPosition()
+  if (!ischecked) {
+    mainWin.setBounds({ x: positionX, y: positionY, width: mainWinW, height: mainWinH })
+  }
+
+}

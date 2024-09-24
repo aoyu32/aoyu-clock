@@ -14,7 +14,7 @@ const minutes2 = document.getElementById("minutes2")
 const seconds1 = document.getElementById("seconds1")
 const seconds2 = document.getElementById("seconds2")
 const date = document.getElementById("date")
-const background = document.querySelector('.clock-background')
+const background = document.querySelector('body')
 
 
 const weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']

@@ -31,6 +31,7 @@ clock.addEventListener('mousedown', async (event) => {
         const newY = winY + event.screenY - mouseY
         //向主进程发送修改窗口位置消息
         window.api.send("set-win-position", {
+
             x: newX,
             y: newY
         })
